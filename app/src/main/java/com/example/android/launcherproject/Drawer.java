@@ -28,33 +28,60 @@ public class Drawer extends Activity{
     private PackageManager packageManager;
     private List<AppDetail> listApps;
     private ListView listView;
+    private Menu menu;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+        SharedPreferences pref = this.getSharedPreferences("MenuState",0);
         loadApps();
-
+        if(pref.getString("State","Alphabet").equals("Time")){
+            Collections.sort(listApps,new SortTime());
+        }
+        else{
+            Collections.sort(listApps,new SortAlpha());
+        }
         loadListView();
         addClickListner();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_drawer,menu);
+        this.menu = menu;
         return true;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        SharedPreferences pref = this.getSharedPreferences("MenuState",0);
+        MenuItem item = menu.findItem(R.id.drawer_settings);
+        if(pref.getString("State","Alphabet").equals("Time")){
+            item.setTitle("Sort Alphabetically");
+        }
+        else{
+            item.setTitle("Sort with Installed Time");
+        }
+        return true;
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        SharedPreferences.Editor editor = (this.getSharedPreferences("MenuState",0)).edit();
         switch (item.getTitle().toString()){
             case "Sort Alphabetically" : item.setTitle("Sort with Installed Time");
                                             Collections.sort(listApps,new SortAlpha());
+                                            editor.putString("State","Alphabet");
+                                            editor.apply();
                                             break;
 
             case "Sort with Installed Time" :item.setTitle("Sort Alphabetically");
                                                 Collections.sort(listApps,new SortTime());
+                                                editor.putString("State","Time");
+                                                editor.apply();
                                                 break;
 
             default : super.onOptionsItemSelected(item);
