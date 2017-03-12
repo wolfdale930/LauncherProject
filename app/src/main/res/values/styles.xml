@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme" parent="android:Theme.Material.Wallpaper.NoTitleBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+    <style name="ThemeDrawer" parent="android:Theme.Material">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:actionOverflowButtonStyle">@style/ThemeActionIcon</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+    <style name="ThemeActionIcon" parent="android:Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/drawer_settings</item>
+        <item name="android:contentDescription">"Sort"</item>
+    </style>
+</resources>
